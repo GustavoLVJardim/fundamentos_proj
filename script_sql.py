@@ -1,5 +1,5 @@
 import sqlite3
-from funcionarios import faz_cadastro
+
 
 def cria_conexao_ou_tabela_sql():
     conexao = sqlite3.connect("empresa.db")
@@ -18,4 +18,19 @@ def cria_conexao_ou_tabela_sql():
     conexao.close()
 
 def insere_dados_funcionario_na_tabela(tupla_de_funcionario):
-    pass
+    try:
+        conexao = sqlite3.connect("empresa.db")
+        cursor = conexao.cursor()
+
+        script_sql = """
+        INSERT INTO funcionarios (nome, email, departamento)
+        VALUES(?,?,?);         
+        """
+        cursor.execute(script_sql, tupla_de_funcionario)
+        conexao.commit()
+
+    except sqlite3.Error as erro:
+        print(f"\n[ERRO SQL]: Não foi possível inserir os dados. DETALHE: {erro}")
+        
+    finally:
+        conexao.close()
