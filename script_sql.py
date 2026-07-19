@@ -34,10 +34,10 @@ def esquecer():
         id_para_esquecer = input("Digite o id para remoção: ")
         conexao = sqlite3.connect("empresa.db")
         cursor = conexao.cursor()
-        script_sql = F"""
+        script_sql = """
         DELETE FROM funcionarios
-        WHERE id = {id_para_esquecer}"""
-        cursor.execute(script_sql)
+        WHERE id = ?"""
+        cursor.execute(script_sql, id_para_esquecer)
         conexao.commit()
         print("A remoção completa foi realizada com sucesso")
 
